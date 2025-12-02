@@ -5,7 +5,7 @@ import * as utils from "./action";
 export async function collectGarbage() {
     utils.info("Removing useless files.");
 
-    await utils.run(`sudo rm -rf /nix/.[!.]* /nix/..?*`);
+    await utils.run(`rm -rf /nix/.[!.]* /nix/..?*`);
 
     utils.info("Calculating store size.");
 
