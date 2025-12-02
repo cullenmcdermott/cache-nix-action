@@ -232,6 +232,11 @@ export async function run(command: string) {
         outStream: fs.createWriteStream(devNull) // Silence command's native output
     };
 
+    console.log("hiiii")
+    console.log("hiiii")
+    console.log("hiiii")
+    console.log("hiiii")
+
     const result = await exec.exec("bash", ["-c", command], options);
 
     return { stdout, stderr, result };
