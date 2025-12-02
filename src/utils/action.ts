@@ -210,28 +210,30 @@ export function getMaxDate({
 
 export const stringify = (value: any) => JSON.stringify(value, null, 2);
 
-export async function run(
-    command: string,
-    enableCommandOutput: boolean = false
-) {
+export async function run(command: string) {
+    console.log(`Executing command: ${command}`);
+
     let stdout = "";
     let stderr = "";
 
     const options: exec.ExecOptions = {
         listeners: {
             stdout: (data: Buffer) => {
-                stdout += data.toString();
+                const str = data.toString();
+                stdout += str;
+                console.log(str);
             },
             stderr: (data: Buffer) => {
-                stderr += data.toString();
+                const str = data.toString();
+                stderr += str;
+                console.error(str);
             }
         },
-        outStream: enableCommandOutput
-            ? undefined
-            : fs.createWriteStream(devNull)
+        outStream: fs.createWriteStream(devNull) // Silence command's native output
     };
 
     const result = await exec.exec("bash", ["-c", command], options);
 
     return { stdout, stderr, result };
 }
+
