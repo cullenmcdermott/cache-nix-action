@@ -84434,7 +84434,6 @@ const exec = __importStar(__nccwpck_require__(5236));
 const github = __importStar(__nccwpck_require__(3228));
 const dedent_1 = __importDefault(__nccwpck_require__(3924));
 const fs = __importStar(__nccwpck_require__(9896));
-const os_1 = __nccwpck_require__(857);
 const constants_1 = __nccwpck_require__(7242);
 const inputs = __importStar(__nccwpck_require__(8422));
 const cacheBackend_1 = __nccwpck_require__(2455);
@@ -84557,20 +84556,23 @@ function getMaxDate({ doUseLastAccessedTime, time }) {
 const stringify = (value) => JSON.stringify(value, null, 2);
 exports.stringify = stringify;
 async function run(command, enableCommandOutput = false) {
+    console.log(`[CMD] ${command}`);
     let stdout = "";
     let stderr = "";
     const options = {
+        silent: !enableCommandOutput, // Use silent flag instead
         listeners: {
             stdout: (data) => {
-                stdout += data.toString();
+                const str = data.toString();
+                stdout += str;
+                console.log(`[OUT] ${str}`);
             },
             stderr: (data) => {
-                stderr += data.toString();
+                const str = data.toString();
+                stderr += str;
+                console.error(`[ERR] ${str}`);
             }
-        },
-        outStream: enableCommandOutput
-            ? undefined
-            : fs.createWriteStream(os_1.devNull)
+        }
     };
     const result = await exec.exec("bash", ["-c", command], options);
     return { stdout, stderr, result };

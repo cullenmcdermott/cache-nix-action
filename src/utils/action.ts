@@ -222,6 +222,7 @@ export async function run(
     let stderr = "";
 
     const options: exec.ExecOptions = {
+        silent: !enableCommandOutput,  // Use silent flag instead
         listeners: {
             stdout: (data: Buffer) => {
                 const str = data.toString();
@@ -233,10 +234,7 @@ export async function run(
                 stderr += str;
                 console.error(`[ERR] ${str}`);
             }
-        },
-        outStream: enableCommandOutput
-            ? undefined
-            : fs.createWriteStream(devNull)
+        }
     };
 
     const result = await exec.exec("bash", ["-c", command], options);
