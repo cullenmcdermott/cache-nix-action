@@ -75857,7 +75857,7 @@ const inputs = __importStar(__nccwpck_require__(8422));
 const utils = __importStar(__nccwpck_require__(9603));
 async function collectGarbage() {
     utils.info("Removing useless files.");
-    await utils.run(`sudo rm -rf /nix/.[!.]* /nix/..?*`);
+    await utils.run(`rm -rf /nix/.[!.]* /nix/..?*`);
     utils.info("Calculating store size.");
     async function getStoreSize() {
         const { stdout } = await utils.run(`nix path-info --json --all | jq 'map(.narSize) | add'`);
